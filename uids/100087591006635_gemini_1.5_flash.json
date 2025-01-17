@@ -1,0 +1,19 @@
+[
+  {
+    "role": "user",
+    "parts": [
+      {
+        "text": "copy the text -g copy the text",
+        "file_url": "https://scontent.xx.fbcdn.net/v/t1.15752-9/473661950_1122437789547097_7768740202313813029_n.jpg?stp=dst-jpg_p480x480_tt6&_nc_cat=111&ccb=1-7&_nc_sid=9f807c&_nc_ohc=0_0q2GAQ7XsQ7kNvgGAYLXM&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD1gHOt9f_EvvJReiHBmTLvD6yzQdByiYS8-qFBk9J_dzxDA&oe=67AE7655"
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "Here's a possible completion of the sentences, keeping in mind that there may be other valid answers depending on the intended meaning:\n\n26. The police usually **prowl** the streets at night in search of law offenders.\n27. Poor artists established a **colony** in Greenwich Village.\n28. This school has a **congenial** atmosphere; everyone is welcome and accepted.\n29. This war is the biggest **ravager** in history.\n30. He offered his seat to the woman as an act of **chivalry**."
+      }
+    ]
+  }
+]

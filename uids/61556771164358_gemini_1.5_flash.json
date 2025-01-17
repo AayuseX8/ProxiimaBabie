@@ -1,0 +1,36 @@
+[
+  {
+    "role": "user",
+    "parts": [
+      {
+        "text": "what is angez",
+        "file_url": ""
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "There's no known word or established term \"angez.\"  It's likely a misspelling, a newly coined word, or a word specific to a niche community or language.  Could you provide more context?  Knowing where you encountered this word would help determine its meaning.\n"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "parts": [
+      {
+        "text": "hi",
+        "file_url": ""
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "Without more context, I still can't tell you what \"angez\" means.  To help me understand, please tell me:\n\n* **Where did you see or hear this word?** (e.g., a book, website, conversation, song)\n* **What was the surrounding text or conversation about?**  The topic might give a clue to the meaning.\n* **What language do you think it might be from?**\n\nThe more information you give me, the better chance I have of figuring out what \"angez\" means.\n"
+      }
+    ]
+  }
+]
