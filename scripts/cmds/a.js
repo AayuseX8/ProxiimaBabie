@@ -26,7 +26,7 @@ module.exports = {
         name: "blenderbot",
         aliases: ["bbot", "chatbot"],
         version: "1.3",
-        author: "Perfect Wife",
+        author: "Mr-Perfect",
         role: 0,
         category: "AI",
         shortDescription: "AI chatbot with memory & reply support.",
