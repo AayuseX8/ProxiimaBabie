@@ -2,8 +2,8 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-const chatHistoryDir = __dirname + '/Chats/Mistral/';
-const apiKey = '0jgnkugoKftsu99SXo6AgZ81fKxssXfq';  // Your Mistral API key
+const chatHistoryDir = 'mistralChatHistory';
+const apiKey = 'm1T33nx0z4NXY2MvHib2XQMmnpgCDHc3';  // Your Mistral API key
 
 const systemPrompt = "Examine the prompt and respond precisely as directed, omitting superfluous information. Provide brief responses, typically 1-2 sentences, except when detailed answers like essays, poems, or stories are requested.";
 

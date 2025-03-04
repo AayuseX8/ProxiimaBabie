@@ -3,7 +3,7 @@ module.exports = {
   config: {
     name: "delete",
     aliases: ["del"],
-    author: "S",
+    author: "Mr-Perfect",
     role: 2,
     category: "system"
   },
@@ -19,7 +19,7 @@ module.exports = {
       return;
     }
 
-    // Automatically append '.js' if the file name doesn't have an extension
+
     const filePath = path.join(__dirname, fileName.endsWith('.js') ? fileName : `${fileName}.js`);
 
     fs.unlink(filePath, (err) => {

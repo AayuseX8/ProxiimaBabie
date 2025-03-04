@@ -1,0 +1,26 @@
+[
+  {
+    "role": "user",
+    "content": "🤧 chiku ki satak gyi pagal khane walo ko bulwao"
+  },
+  {
+    "role": "assistant",
+    "content": "It seems you've used a mix of Hindi and English to convey that a Chikoo (Sapodilla) tree has gone mad and you want to call the mental health professionals. If you're looking for a humorous interpretation, it could be that the tree is behaving unusually, perhaps growing or fruiting oddly, and you jestingly want to call experts to assess its \"mental health.\" However if you are being literal it would be best to call an arborist."
+  },
+  {
+    "role": "user",
+    "content": "🤔"
+  },
+  {
+    "role": "assistant",
+    "content": "What would you like me to do next?"
+  },
+  {
+    "role": "user",
+    "content": "🤧 nepal ki ticket krwa do"
+  },
+  {
+    "role": "assistant",
+    "content": "To book a ticket to Nepal, you can use travel websites like MakeMyTrip, Yatra, or ClearTrip. You'll need to enter your travel dates, departure city, and destination (Kathmandu, for instance), then follow the prompts to complete your booking."
+  }
+]

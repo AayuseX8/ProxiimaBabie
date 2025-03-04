@@ -6,7 +6,7 @@ module.exports = {
   config: {
     name: "group",
     version: "3.6",
-    author: "Kshitiz",
+    author: "Mr-Perfect",
     countDown: 5,
     role: 0,
     shortDescription: "Manage group join/leave requests",

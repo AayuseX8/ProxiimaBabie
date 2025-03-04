@@ -1,31 +1,34 @@
 const axios = require('axios');
 
-// Define the API endpoint and your API key
-const apiUrl = "https://api.google.com/gemini/v1.5/flash";
-const apiKey = "S"; // Replace with your actual API key
+const apiKey = 'r-027fb3016544de39da06654e'; // Replace with your valid API key
+const prompt = 'A girl on a roof';
+const quality = 'Standard v3.1'; // or 'Heavy v3.1' based on your needs
+const aspectRatio = 'square'; // or 'portrait'
+const dimensions = aspectRatio === 'portrait' ? { width: 640, height: 1024 } : { width: 1024, height: 1024 };
 
-// Define the question you want to test
-const question = "What are the benefits of using AI in healthcare?";
+const apiUrl = `https://for-devs.ddns.net/api/niji`;
 
-// Function to send the request
-async function testGeminiAPI() {
-    try {
-        const response = await axios.post(apiUrl, {
-            question: question
-        }, {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        console.log("Response from Gemini 1.5 Flash API:");
-        console.log(response.data);
-    } catch (error) {
-        console.error("Error:", error.response ? error.response.status : error.message);
-        console.error("Details:", error.response ? error.response.data : '');
-    }
-}
-
-// Call the function to test the API
-testGeminiAPI();
+axios.get(apiUrl, {
+  params: {
+    prompt: prompt,
+    style: 'Cinematic',
+    sampler: 'DDIM',
+    quality: quality,
+    width: dimensions.width,
+    height: dimensions.height,
+    ratio: `${dimensions.width}x${dimensions.height}`,
+    apikey: apiKey
+  },
+  responseType: 'arraybuffer'
+})
+.then(response => {
+  if (response.status === 200) {
+    const imageBuffer = Buffer.from(response.data, 'binary');
+    // Handle the image buffer (e.g., save to file, send in a response)
+  } else {
+    console.error(`Failed to generate image. Server responded with status ${response.status}.`);
+  }
+})
+.catch(error => {
+  console.error(`Error: ${error.message}`);
+});
