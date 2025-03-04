@@ -1,144 +1,103 @@
-
-const fs = require("fs-extra");
-const axios = require("axios");
-const path = require("path");
 const { getPrefix } = global.utils;
 const { commands, aliases } = global.GoatBot;
-const doNotDelete = "[ 😎 | Perfect AI ]";
 
 module.exports = {
-  config: {
-    name: "help",
-    version: "1",
-    author: "Mr perfect", 
-    countDown: 0,
-    role: 0,
-    shortDescription: {
-      en: "View command usage",
+    config: {
+        name: "help",
+        version: "2.5.0",
+        author: "Priyanshi Kaur",
+        countDown: 5,
+        role: 0,
+        shortDescription: {
+            en: "View available commands."
+        },
+        longDescription: {
+            en: "Displays detailed information about bot commands, their usage, and categories."
+        },
+        category: "system",
+        guide: {
+            en: "{prefix}help [page | all]\n{prefix}help <command>: Details about a specific command"
+        },
+        priority: 1
     },
-    longDescription: {
-      en: "View command usage and list all commands directly",
-    },
-    category: "info",
-    guide: {
-      en: "{pn} / help cmdName ",
-    },
-    priority: 1,
-  },
 
-  onStart: async function ({ message, args, event, threadsData, role }) {
-    const { threadID } = event;
-    const threadData = await threadsData.get(threadID);
-    const prefix = getPrefix(threadID);
-
-    if (args.length === 0) {
-      const categories = {};
-      let msg = "";
-
-      msg += `╔══════════════╗\n     PERFECT CMD💐\n╚══════════════╝`;
-
-      for (const [name, value] of commands) {
-        if (value.config.role > 1 && role < value.config.role) continue;
-
-        const category = value.config.category || "Uncategorized";
-        categories[category] = categories[category] || { commands: [] };
-        categories[category].commands.push(name);
-      }
-
-      Object.keys(categories).forEach((category) => {
-        if (category !== "info") {
-          msg += `\n╭────────────⭓\n│『 ${category.toUpperCase()} 』`;
-
-          const names = categories[category].commands.sort();
-          for (let i = 0; i < names.length; i += 1) {
-            const cmds = names
-              .slice(i, i + 1)
-              .map((item) => `│✧${item}`);
-            msg += `\n${cmds.join(
-              " ".repeat(Math.max(0, 5 - cmds.join("").length))
-            )}`;
-          }
-
-          msg += `\n╰────────⭓`;
+    langs: {
+        en: {
+            commandListHeader: "╭─── COMMANDS ───",
+            commandEntry: "│ ○ %1 - %2",
+            commandFooter: "╰───────────────\n👤 Requested by: %1\n📖 Page: (%2/%3)\n📦 Total commands: %4\nⓘ For assistance, contact the developer.",
+            noDescription: "No description available",
+            allCommandsHeader: "📜 All available commands:",
+            invalidCommand: "❌ Command '%1' not found.",
+            allCommandsFooter: "📦 Total commands: %1",
+            commandDetailsHeader: "╭── COMMAND INFO ────⭓",
+            commandDetails: "│ 📝 Name: %1\n│ 📚 Description: %2\n│ 🔧 Version: %3\n│ 👑 Role: %4\n│ ⏰ Cooldown: %5s\n│ ✍️ Author: %6",
+            usageHeader: "├── USAGE ────⭔",
+            commandUsage: "%1",
+            commandDetailsFooter: "╰──────────⭓"
         }
-      });
+    },
 
-      const totalCommands = commands.size;
-      msg += `\n𝘾𝙪𝙧𝙧𝙚𝙣𝙩𝙡𝙮, 𝙄 𝙝𝙖𝙫𝙚  ${totalCommands} 𝙘𝙤𝙢𝙢𝙖𝙣𝙙𝙨 𝙩𝙝𝙖𝙩 𝙘𝙖𝙣 𝙗𝙚 𝙪𝙨𝙚𝙙. 𝙎𝙤𝙤𝙣 𝙢𝙤𝙧𝙚 𝙘𝙤𝙢𝙢𝙖𝙣𝙙𝙨 𝙬𝙞𝙡𝙡 𝙗𝙚 𝙖𝙙𝙙𝙚𝙙\n`;
-      msg += `𝙏𝙮𝙥𝙚 ${prefix} 𝙝𝙚𝙡𝙥 𝗰𝙤𝙢𝙢𝙖𝙣𝙙 𝗡𝗮𝗺𝗲 𝘁𝗼 𝘃𝗶𝗲𝘄 𝘁𝗵𝗲 𝗱𝗲𝘁𝗮𝗶𝗹𝘀 𝗼𝗳 𝘁𝗵𝗮𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱\n`;
-      msg += `𝑴𝑹 𝑷𝑬𝑹𝑭𝑬𝑪𝑻 𝑨𝑰 (•̀ᴗ•́)و`;
+    onStart: async function ({ message, args, event, getLang, role }) {
+        const prefix = getPrefix(event.threadID);
+        const userName = event.senderName || "User";
 
-      const helpListImages = [
-        "https://i.imgur.com/WHRGiPz.gif",
-        "https://i.imgur.com/zM4Hvmn.gif ",
-        "https://i.imgur.com/8d6WbRJ.gif",
-        "https://i.imgur.com/aYS6HRa.mp4",               "https://i.imgur.com/AIz8ASV.jpeg",
-                "https://i.imgur.com/6vAPXOY.gif",
-              ];
+        const availableCommands = Array.from(commands.values())
+            .filter(cmd => cmd.config.role <= role);
 
-              const helpListImage =
-                helpListImages[Math.floor(Math.random() * helpListImages.length)];
+        if (args.length === 1 && isNaN(args[0])) {
+            const commandName = args[0].toLowerCase();
+            const command = commands.get(commandName) || aliases.get(commandName);
 
-              await message.reply({
-                body: msg,
-                attachment: await global.utils.getStreamFromURL(helpListImage),
-              });
-            } else {
-              const commandName = args[0].toLowerCase();
-              const command =
-                commands.get(commandName) || commands.get(aliases.get(commandName));
-
-              if (!command) {
-                await message.reply(`Command "${commandName}" not found.`);
-              } else {
-                const configCommand = command.config;
-                const roleText = roleTextToString(configCommand.role);
-                const author = configCommand.author || "Unknown";
-
-                const longDescription = configCommand.longDescription
-                  ? configCommand.longDescription.en || "No description"
-                  : "No description";
-
-                const guideBody =
-                  configCommand.guide?.en || "No guide available.";
-                const usage = guideBody
-                  .replace(/{pn}/g, prefix)
-                  .replace(/{n}/g, configCommand.name);
-
-                const response = `╭── NAME ────⭓
-          │ ${configCommand.name}
-          ├── INFO
-          │ Description: ${longDescription}
-          │ Other names: ${
-                  configCommand.aliases ? configCommand.aliases.join(", ") : "Do not have"
-                }
-          │ Other names in your group: Do not have
-          │ Version: ${configCommand.version || "1.0"}
-          │ Role: ${roleText}
-          │ Time per command: ${configCommand.countDown || 1}s
-          │ Author: ${author}
-          ├── Usage
-          │ ${usage}
-          ├── Notes
-          │ The content inside <XXXXX> can be changed
-          │ The content inside [a|b|c] is a or b or c
-          ╰━━━━━━━❖`;
-
-                await message.reply(response);
-              }
+            if (!command || command.config.role > role) {
+                return message.reply(getLang("invalidCommand", commandName));
             }
-          },
-        };
 
-        function roleTextToString(roleText) {
-          switch (roleText) {
-            case 0:
-              return "0 (All users)";
-            case 1:
-              return "1 (Group administrators)";
-            case 2:
-              return "2 (Admin bot)";
-            default:
-              return "Unknown role";
-          }
+            const cmdConfig = command.config;
+            const description = cmdConfig.shortDescription?.en || cmdConfig.longDescription?.en || getLang("noDescription");
+            const guide = cmdConfig.guide?.en.replace(/{prefix}/g, prefix).replace(/{pn}/g, `${prefix}${cmdConfig.name}`) || "";
+
+            let msg = `${getLang("commandDetailsHeader")}\n`;
+            msg += `${getLang(
+                "commandDetails",
+                cmdConfig.name,
+                description,
+                cmdConfig.version,
+                cmdConfig.role,
+                cmdConfig.countDown,
+                cmdConfig.author
+            )}\n`;
+            msg += `${getLang("usageHeader")}\n${getLang("commandUsage", guide)}`;
+            msg += `\n${getLang("commandDetailsFooter")}`;
+
+            return message.reply(msg);
         }
+
+        if (args[0] === "all") {
+            const commandList = availableCommands.map(cmd => cmd.config.name).join(", ");
+            return message.reply(
+                `${getLang("allCommandsHeader")}\n${commandList}\n\n${getLang("allCommandsFooter", availableCommands.length)}`
+            );
+        }
+
+        const commandsPerPage = 10;
+        const page = parseInt(args[0]) || 1;
+        const totalPages = Math.ceil(availableCommands.length / commandsPerPage);
+
+        if (page < 1 || page > totalPages) {
+            return message.reply(`❌ Invalid page number. Total pages: ${totalPages}`);
+        }
+
+        const startIndex = (page - 1) * commandsPerPage;
+        const pageCommands = availableCommands.slice(startIndex, startIndex + commandsPerPage);
+
+        let msg = getLang("commandListHeader");
+        pageCommands.forEach(cmd => {
+            const description = cmd.config.shortDescription?.en || cmd.config.longDescription?.en || getLang("noDescription");
+            msg += `\n${getLang("commandEntry", cmd.config.name, description)}`;
+        });
+        msg += `\n${getLang("commandFooter", userName, page, totalPages, availableCommands.length)}`;
+
+        return message.reply(msg);
+    }
+};
